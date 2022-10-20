@@ -6,15 +6,19 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
+        "ext-curl": "*",
         "ext-exif": "*",
         "ext-gd": "*",
+        "binance/binance-connector-php": "^1.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.5.3",
+        "krakjoe/pthreads-polyfill": "^1.1",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "league/glide-laravel": "^1.0"
+        "league/glide-laravel": "^1.0",
+      "ext-pthreads": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

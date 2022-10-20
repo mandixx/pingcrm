@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Strategy;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ class UsersController extends Controller
                     'email' => $user->email,
                     'owner' => $user->owner,
                     'photo' => $user->photo_path ? URL::route('image', ['path' => $user->photo_path, 'w' => 40, 'h' => 40, 'fit' => 'crop']) : null,
+//                    'api_pairs' => $user->apipairs,
                     'deleted_at' => $user->deleted_at,
                 ]),
         ]);
@@ -70,6 +72,9 @@ class UsersController extends Controller
                 'email' => $user->email,
                 'owner' => $user->owner,
                 'photo' => $user->photo_path ? URL::route('image', ['path' => $user->photo_path, 'w' => 60, 'h' => 60, 'fit' => 'crop']) : null,
+                'api_pairs' => $user->apipairs,
+                'strategies' => Strategy::all(),
+                'webhookurl' => URL::signedRoute('webhook', ['code' => $user->code]),
                 'deleted_at' => $user->deleted_at,
             ],
         ]);

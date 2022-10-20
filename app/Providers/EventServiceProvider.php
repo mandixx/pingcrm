@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\CustomTrade;
+use App\Models\Strategy;
+use App\Models\User;
+use App\Observers\CustomTradeObserver;
+use App\Observers\StrategyObserver;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -28,5 +34,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        User::observe(UserObserver::class);
+        CustomTrade::observe(CustomTradeObserver::class);
+        Strategy::observe(StrategyObserver::class);
     }
 }

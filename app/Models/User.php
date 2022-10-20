@@ -49,9 +49,12 @@ class User extends Authenticatable
         return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
     }
 
-    public function account()
-    {
-        return $this->belongsTo(Account::class);
+    public function apiPairs() {
+        return $this->hasMany(ApiPair::class);
+    }
+
+    public function customTrades() {
+        return $this->hasMany(CustomTrade::class);
     }
 
     public function getNameAttribute()
@@ -99,5 +102,18 @@ class User extends Authenticatable
                 $query->onlyTrashed();
             }
         });
+    }
+
+    /**
+     * Write code on Method
+     *
+     */
+    public function generateUniqueCode()
+    {
+        do {
+            $code = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(15/strlen($x)) )),1,15);
+        } while (User::where("code", "=", $code)->first());
+
+        return $code;
     }
 }

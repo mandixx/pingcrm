@@ -1,5 +1,57 @@
 <template>
-  <div>
+  <div class="common-layout">
+    <el-container>
+      <el-aside width="200px">
+        <el-menu
+          default-active="2"
+          class="el-menu-vertical-demo"
+          :collapse="false"
+          @mouseenter="handleMouseEnter"
+          @mouseleave="handleMouseLeave"
+        >
+          <el-menu-item index="1">
+            <el-icon><Histogram /></el-icon>
+            <template #title><Link :href="`/`">Bot Information</Link></template>
+          </el-menu-item>
+<!--          <el-sub-menu index="1">-->
+<!--            <template #title>-->
+<!--&lt;!&ndash;              <el-icon><location /></el-icon>&ndash;&gt;-->
+<!--              <span>BOT Information</span>-->
+<!--            </template>-->
+<!--            <el-menu-item-group>-->
+<!--              <template #title><span>Curr</span></template>-->
+<!--              <el-menu-item index="1-1">item one</el-menu-item>-->
+<!--              <el-menu-item index="1-2">item two</el-menu-item>-->
+<!--            </el-menu-item-group>-->
+<!--            <el-menu-item-group title="Group Two">-->
+<!--              <el-menu-item index="1-3">item three</el-menu-item>-->
+<!--            </el-menu-item-group>-->
+<!--            <el-sub-menu index="1-4">-->
+<!--              <template #title><span>item four</span></template>-->
+<!--              <el-menu-item index="1-4-1">item one</el-menu-item>-->
+<!--            </el-sub-menu>-->
+<!--          </el-sub-menu>-->
+          <el-menu-item index="2">
+            <el-icon><Avatar /></el-icon>
+            <template #title><Link :href="`/users/${auth.user.id}/edit`">My Profile</Link></template>
+          </el-menu-item>
+<!--          <el-menu-item index="3">-->
+<!--            <template #title><Link href="/users">Manage Users</Link></template>-->
+<!--          </el-menu-item>-->
+          <el-menu-item index="3">
+            <el-icon><Avatar /></el-icon>
+            <template #title><Link href="/logout" method="delete" as="button">Logout</Link></template>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-header>Header</el-header>
+        <el-main><slot /></el-main>
+        <el-footer>Footer</el-footer>
+      </el-container>
+    </el-container>
+  </div>
+  <!-- <div>
     <div id="dropdown" />
     <div class="md:flex md:flex-col">
       <div class="md:flex md:flex-col md:h-screen">
@@ -33,9 +85,7 @@
               </template>
               <template #dropdown>
                 <div class="mt-2 py-2 text-sm bg-white rounded shadow-xl">
-                  <Link class="block px-6 py-2 hover:text-white hover:bg-indigo-500" :href="`/users/${auth.user.id}/edit`">My Profile</Link>
-                  <Link class="block px-6 py-2 hover:text-white hover:bg-indigo-500" href="/users">Manage Users</Link>
-                  <Link class="block px-6 py-2 w-full text-left hover:text-white hover:bg-indigo-500" href="/logout" method="delete" as="button">Logout</Link>
+
                 </div>
               </template>
             </dropdown>
@@ -50,28 +100,53 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
 import { Link } from '@inertiajs/inertia-vue3'
-import Icon from '@/Shared/Icon'
-import Logo from '@/Shared/Logo'
-import Dropdown from '@/Shared/Dropdown'
-import MainMenu from '@/Shared/MainMenu'
-import FlashMessages from '@/Shared/FlashMessages'
-
+import { Avatar, Histogram } from '@element-plus/icons-vue'
 export default {
   components: {
-    Dropdown,
-    FlashMessages,
-    Icon,
     Link,
-    Logo,
-    MainMenu,
+    Avatar,
+    Histogram,
+  },
+  data() {
+    return {
+      timeoutId: null,
+      collapsed: true,
+    }
   },
   props: {
     auth: Object,
   },
+  methods: {
+    handleMouseLeave () {
+      this.collapsed = true;
+      // Clear the timeout
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
+    },
+    handleMouseEnter () {
+      this.collapsed = false;
+      // Set the sidebar to open after Xms
+      this.timeoutId = setTimeout(() => {
+        this.timeoutId = null;
+      },
+      300)
+    },
+  },
 }
 </script>
+
+<style>
+.common-layout {
+  height: 100%;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 100vh;
+}
+</style>
