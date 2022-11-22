@@ -4029,10 +4029,10 @@
   "resolved" "https://registry.npmjs.org/klona/-/klona-2.0.5.tgz"
   "version" "2.0.5"
 
-"laravel-echo@^1.14.0":
-  "integrity" "sha512-5tirx4TKZjyySIUgr3HKnimpVOmdOUdcFamuzNxF2dSftGC5fY1bpGhjOHzBKqHL/XzMRiWQO1FItrvp3iipmw=="
-  "resolved" "https://registry.npmjs.org/laravel-echo/-/laravel-echo-1.14.0.tgz"
-  "version" "1.14.0"
+"laravel-echo@^1.14.1":
+  "integrity" "sha512-elCwcgBy0QxWUJN6b+hF5bqBZrQb1AdwGx7puv+eh3cBN3UHkJ+Jvjy1cHjaOBkkuPNA+GLJl13rp2QG/HsSfQ=="
+  "resolved" "https://registry.npmjs.org/laravel-echo/-/laravel-echo-1.14.1.tgz"
+  "version" "1.14.1"
 
 "laravel-mix@^6.0.41":
   "integrity" "sha512-bBMFpFjp26XfijPvY5y9zGKud7VqlyOE0OWUcPo3vTBY5asw8LTjafAbee1dhfLz6PWNqDziz69CP78ELSpfKw=="
@@ -5204,10 +5204,10 @@
     "postcss" "^8.3.5"
     "postcss-selector-parser" "^6.0.6"
 
-"pusher-js@^7.4.0":
-  "integrity" "sha512-4ewETSlJEdRZ2eHGEMH3pHxMVB+sB4oMmOWbgYbSRsYbTFPOpRBumSEm9NSNse3pfjiluTrB98PaXijJ6BL3lg=="
-  "resolved" "https://registry.npmjs.org/pusher-js/-/pusher-js-7.4.0.tgz"
-  "version" "7.4.0"
+"pusher-js@^7.5.0":
+  "integrity" "sha512-R8eL3v2hnOC7NY8ufvrcDPdEjit//2pqVmcC7h1sUyoZQ4M+bwlwkszmMVuVbYNKZUS8WRFmSvdeb9LkfLyvZQ=="
+  "resolved" "https://registry.npmjs.org/pusher-js/-/pusher-js-7.5.0.tgz"
+  "version" "7.5.0"
   dependencies:
     "@types/node" "^14.14.31"
     "tweetnacl" "^1.0.3"

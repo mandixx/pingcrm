@@ -4,7 +4,7 @@
     <h1 class="mb-8 text-3xl font-bold">BOT Trades</h1>
     <el-row>
       <el-col :span="2">
-        <el-button @click="reload1" type="primary">Refresh</el-button>
+        <el-button @click="refreshTrades" type="primary">Refresh</el-button>
       </el-col>
       <el-col :span="4">
         <el-select-v2 filterable v-model="pairNameFilterValue" placeholder="Please select a api pair" :options="apiPairs" clearable>
@@ -49,11 +49,6 @@ import {
   TableV2SortOrder
 } from 'element-plus'
 import { h } from 'vue';
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
-import axios from 'axios';
-
-
 
 export default {
   components: {
@@ -74,7 +69,6 @@ export default {
         },
         popoverRef: {},
         pairNameFilterValue: '',
-        intervalId: '',
         columns: [
           {
             key: 'open_date',
@@ -196,21 +190,21 @@ export default {
     }
       return profit.toFixed(4).toString() + ' $';
     }
-
   },
   mounted() {
-    this.intervalId = setInterval(this.reload1, 60000)
+    window.Echo.channel('channel')
+      .listen('CustomTradeProcessed', (e) => {
+        this.refreshTrades();
+      })
   },
   destroyed() {
-    clearInterval(this.intervalId);
   },
   methods: {
     onSort(sortState) {
-      // console.log(sortState)
       this.trades.reverse();
       this.sortState = sortState;
     },
-    reload1() {
+    refreshTrades() {
       Inertia.reload({ only: ['trades']})
     }
   }

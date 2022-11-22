@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\CustomTradeProcessed;
 use App\Models\CustomTrade;
 
 class CustomTradeObserver
@@ -14,7 +15,7 @@ class CustomTradeObserver
      */
     public function created(CustomTrade $customTrade)
     {
-        //
+        broadcast(new CustomTradeProcessed());
     }
 
     /**
@@ -25,7 +26,7 @@ class CustomTradeObserver
      */
     public function updated(CustomTrade $customTrade)
     {
-        //
+        broadcast(new CustomTradeProcessed());
     }
 
     /**
