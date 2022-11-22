@@ -9,7 +9,7 @@
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
-        "prod": "npm run production",
+        "prod": "mix --production && mix --production --mix-config=webpack.ssr.mix.js",
         "production": "mix --production && npm run ssr:build",
         "heroku-postbuild": "npm run prod",
         "ssr:build": "mix --production --mix-config=webpack.ssr.mix.js",

@@ -10,7 +10,9 @@ use App\Jobs\ProcessRequest;
 use App\Models\ApiPair;
 use App\Models\Strategy;
 use App\Models\User;
+use Binance\Websocket\Spot;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
@@ -108,34 +110,65 @@ class ApiPairController extends Controller
     {
         //
         try {
-            if (!$request->hasValidSignature()) {
-                abort(401);
-            }
+//            if (!$request->hasValidSignature()) {
+//                abort(401);
+//            }
             $user = User::where('code', '=', $code)->firstOrFail();
             $data = (array)json_decode($request->getContent());
 
             $strategy = Strategy::where('code', '=', $data['strategy_code'])->firstOrFail();
 
-//            $operators = [];
+
             foreach ($strategy->apipairs as $apipair)
             {
-//                $operators[] = new OperatorThreaded($apipair->api_key, $apipair->api_secret, $user->id, strtoupper($data['action']), $data['stable_coin'], $data['crypto_asset']);
                 ProcessRequest::dispatch($apipair->api_key, $apipair->api_secret, $user->id, strtoupper($data['action']), $data['stable_coin'], $data['crypto_asset']);
             }
-//
-//            $pool = new Pool(count($operators), Autoloader::class);
-//            foreach ($operators as $operator) {
-//                $thread = new OperatorThread($operator);
-//                $pool->submit($thread);
-//            }
-//
-//            while ($pool->collect());
-//            $pool->shutdown();
+
+
 
             return Response::json([
                 'message' => 'Success'
             ], 200);
         } catch (\Exception $ex) {
+            Log::emergency($ex->getMessage());
+            return Response::json([
+                'message' => $ex->getMessage()
+            ], 400);
+        }
+    }
+
+    public function websocket(Request $request, $code)
+    {
+        //
+        try {
+//            if (!$request->hasValidSignature()) {
+//                abort(401);
+//            }
+//            $user = User::where('code', '=', $code)->firstOrFail();
+//            $data = (array)json_decode($request->getContent());
+
+//            $strategy = Strategy::where('code', '=', $data['strategy_code'])->firstOrFail();
+
+            $client = new Spot();
+
+            $callbacks = [
+                'message' => function ($conn, $msg) {
+                    echo $msg.PHP_EOL;
+                },
+                'ping' => function ($conn, $msg) {
+                    echo "received ping from server".PHP_EOL;
+                }
+            ];
+
+            $client->trade('btcusdt', $callbacks);
+
+
+
+            return Response::json([
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $ex) {
+            Log::emergency($ex->getMessage());
             return Response::json([
                 'message' => $ex->getMessage()
             ], 400);

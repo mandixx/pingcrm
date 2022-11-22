@@ -9,6 +9,7 @@ use App\Models\ApiPair;
 use App\Models\CustomTrade;
 use App\Models\User;
 use Binance\Spot;
+use Illuminate\Support\Facades\Log;
 
 class Binance
 {
@@ -296,6 +297,7 @@ class Binance
             $data['qty'] = $position_response['executedQty'];
             try {
                 CustomTrade::create($data);
+                Log::debug(implode($data));
             } catch (\Exception $exception) {
                 throw $exception;
             }
@@ -309,10 +311,15 @@ class Binance
                 ->orderByDesc('created_at')
                 ->first();
 
+
             $latest_trade->sell_order_id = $position_response['orderId'];
             $latest_trade->order_list_id = $position_response['orderListId'];
             $latest_trade->price_sell = self::get_average_fill_price($position_response['fills']);
             $latest_trade->profit = ($latest_trade->price_sell - $latest_trade->price_buy) * $latest_trade->qty;
+
+            Log::debug('CLOSING TRADE WITH ID - ' . $latest_trade->id);
+            Log::debug('PROFIT - ' . $latest_trade->profit);
+
 
             try {
                 $latest_trade->save();

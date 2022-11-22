@@ -21,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // WebHook
 Route::post('api-pairs/{code}', [\App\Http\Controllers\ApiPairController::class, 'webhook'])
     ->name('webhook');
+
+Route::post('api-pairs/web/{code}', [\App\Http\Controllers\ApiPairController::class, 'websocket'])
+    ->name('websocket');

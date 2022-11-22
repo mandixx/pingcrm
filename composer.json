@@ -9,6 +9,7 @@
         "ext-curl": "*",
         "ext-exif": "*",
         "ext-gd": "*",
+        "beyondcode/laravel-websockets": "^1.13",
         "binance/binance-connector-php": "^1.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -18,7 +19,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "league/glide-laravel": "^1.0",
-      "ext-pthreads": "*"
+        "predis/predis": "^2.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

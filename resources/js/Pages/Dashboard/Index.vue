@@ -74,6 +74,7 @@ export default {
         },
         popoverRef: {},
         pairNameFilterValue: '',
+        intervalId: '',
         columns: [
           {
             key: 'open_date',
@@ -198,6 +199,10 @@ export default {
 
   },
   mounted() {
+    this.intervalId = setInterval(this.reload1, 60000)
+  },
+  destroyed() {
+    clearInterval(this.intervalId);
   },
   methods: {
     onSort(sortState) {
@@ -207,7 +212,6 @@ export default {
     },
     reload1() {
       Inertia.reload({ only: ['trades']})
-
     }
   }
 }
