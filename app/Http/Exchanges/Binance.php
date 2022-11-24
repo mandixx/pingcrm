@@ -62,6 +62,7 @@ class Binance
         } catch (\Exception $ex) {
             // Handle exception
             self::tradeFailed();
+            throw $ex;
         }
     }
 
@@ -87,7 +88,7 @@ class Binance
             self::afterSuccessfulOrder($close_position_response);
 
         } catch (\Exception $ex) {
-
+            throw $ex;
         }
     }
 
@@ -297,7 +298,6 @@ class Binance
             $data['qty'] = $position_response['executedQty'];
             try {
                 CustomTrade::create($data);
-                Log::debug(implode($data));
             } catch (\Exception $exception) {
                 throw $exception;
             }
@@ -322,7 +322,7 @@ class Binance
 
 
             try {
-                $latest_trade->save();
+                $latest_trade->update();
             } catch (\Exception $exception) {
                 throw $exception;
             }

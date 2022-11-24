@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class ProcessRequest implements ShouldQueue
 {
@@ -46,13 +47,23 @@ class ProcessRequest implements ShouldQueue
      */
     public function handle()
     {
-        $user = User::findOrFail($this->user_id);
-        $api_pair = ApiPair::where('api_key', '=', $this->api_key)->where('api_secret', '=', $this->api_secret)->firstOrFail();
-        $exchange = new Binance($user, $api_pair, $this->crypto_asset, $this->stable_coin);
+        try {
+            $user = User::findOrFail($this->user_id);
+            $api_pair = ApiPair::where('api_key', '=', $this->api_key)->where('api_secret', '=', $this->api_secret)->firstOrFail();
+            $exchange = new Binance($user, $api_pair, $this->crypto_asset, $this->stable_coin);
 
-        if(strtoupper($this->action === Binance::SIDE_BUY))
-            $exchange->open_spot_position();
-        else if(strtoupper($this->action === Binance::SIDE_SELL))
-            $exchange->close_spot_position();
+            if(strtoupper($this->action === Binance::SIDE_BUY))
+                $exchange->open_spot_position();
+            else if(strtoupper($this->action === Binance::SIDE_SELL))
+                $exchange->close_spot_position();
+        } catch (\Exception $ex) {
+            $message = $ex->getMessage();
+            $message = strtok(substr($message, strpos($message, '{')), '}') . '}';
+            $messageJson = json_decode($message);
+            Log::emergency($ex->getMessage());
+            Log::emergency('RESPONSE FROM FAILED REQUEST ' . $message);
+        }
+
+
     }
 }

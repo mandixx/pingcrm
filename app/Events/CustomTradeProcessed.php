@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CustomTradeProcessed implements ShouldBroadcastNow
+class CustomTradeProcessed implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -25,7 +25,8 @@ class CustomTradeProcessed implements ShouldBroadcastNow
         //
     }
 
-    public function broadcastWith() {
+    public function broadcastWith(): array
+    {
         return ['event' => 'fired'];
     }
 
