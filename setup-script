@@ -1,0 +1,58 @@
+#!/usr/bin/bash
+
+cd "$(dirname "$0")"
+
+echo "Starting up the setup script..."
+sleep .5
+
+#cp .env.example .env
+##Database config setup
+#sed -i -e 's/DB_DATABASE=laravel//g' .env
+#echo -n "Enter a database name > "
+#read database
+#sed  -i "12i  DB_DATABASE=$database" .env
+#
+## config username
+#sed -i -e 's/DB_USERNAME=root//g' .env
+#echo -n "Enter a  username > "
+#read username
+#sed  -i "12i  DB_DATABASE=$username" .env
+#
+## config password
+#sed -i -e 's/DB_PASSWORD=//g' .env
+#echo -n "Enter  password > "
+#read password
+#sed  -i "12i  DB_DATABASE=$password" .env
+#
+#echo "DB Configuration - successful"
+
+echo "Migrating..."
+sleep .5
+sudo php artisan migrate &
+echo "Seeding..."
+sleep .5
+sudo php artisan db:seed &
+
+echo "WebSocket server deployment steps are starting..."
+sleep .5
+#echo "Creating laravel-echo.conf to increase 'Maximum number of file descriptors' to 100000"
+#sudo echo > /etc/security/limits.d/laravel-echo.conf
+echo "Installing Event PECL extension"
+sudo pecl install event
+
+echo "Backend DONE"
+echo "Compiling the Frontend"
+sudo npm run dev
+
+echo "Frontend DONE"
+
+echo "Restarting Supervisor..."
+sleep .5
+sudo service supervisor stop
+sudo service supervisor start
+sleep 3
+echo "Checking Supervisor status..."
+sudo supervisorctl status
+sleep 3
+
+echo "Starting WebSocket Server"
