@@ -39,7 +39,7 @@ class Binance
         $this->stable_coin = $stableCoinParam;
     }
 
-    public function open_spot_position($bot_starting_position_percent=0.9, $bot_tp_percent=0.8, $bot_sl_percent=0.2)
+    public function open_spot_position($bot_starting_position_percent=0.9, $bot_tp_percent=15, $bot_sl_percent=0.2)
     {
         try {
             $current_acc_balance = self::get_account_balances()['stable_coin'];
